@@ -46,6 +46,10 @@ The languages ar erlang and elixir.
 
 Products: RabbitMQ, Couchbase Server, Riak
 
+### Erlang
+
+    lists:sum(lists:map(fun(X) -> math:pow(2,X) end, lists:seq(1,4))).
+
 ### Elixir
 
     1..4 |> Enum.map(fn n -> n * n end) |> Enum.sum()
