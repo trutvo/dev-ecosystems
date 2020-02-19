@@ -16,7 +16,7 @@ Products: Apache Tomcat, Jetty, JBoss
 
 Kotlin is the preferred programming language for the Android platform.
 
-Products: IntelliJ IDEA, Trello 
+Products: IntelliJ IDEA, Trello
 
     (1..4).map({n -> n * n}).sum()
 
