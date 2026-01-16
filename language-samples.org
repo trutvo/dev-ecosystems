@@ -88,7 +88,7 @@ Products: Ruby on Rails, Puppet
 
 Products: ansible, yum, ubuntu software center, Django, Google App Engine, Mercurial, OpenStack
 
-#+begin_src python3
+#+begin_src python
     sum([ n * n for n in range(1, 5) ])
 #+end_src
 
@@ -100,9 +100,12 @@ Products: Emacs
 In common list you have to extend the language with your own range command:
 
 #+begin_src elisp
-  (defun range (max &key (min 0) (step 1))
-    (loop for n from min below max by step
+  (defun range (min max)
+    (cl-loop for n from min below max by 1
       collect n))
 
-  (reduce #'+ (map 'list (lambda (x) (* x x)) (range 5 :min 1)))
+  (seq-reduce (lambda (x y) (* x y)) (range 1 5) 1)
 #+end_src
+
+#+RESULTS:
+: 24
