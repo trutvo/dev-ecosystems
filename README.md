@@ -10,7 +10,7 @@
 * Concurrency
 * OO Features
 * Functional Features
-* Meta Programming
+* [Meta Programming](meta-programming.org)
 * Building DSLs
 * Testing / Unittests
 * Debugging
