@@ -2,7 +2,7 @@
 
 ![lang tree](lang-tree.png)
 
-* [Language Samples](language-samples.md)
+* [Language Samples](language-samples.org)
 
 ## Language Features
 
