@@ -130,7 +130,7 @@ to functions that perform database operations.
 A typical example of meta programming in Java is loading classes dynamically at runtime using reflection.
 In this example, we load a JDBC driver class dynamically. This is often used in application servers.
 
-#+BEGIN_SRC java :exports both :results silent :tangle LoadDriverExample.java
+#+BEGIN_SRC java :exports both :results both :tangle LoadDriverExample.java
   import java.lang.reflect.Method;
 
   public class LoadDriverExample {
@@ -147,3 +147,6 @@ In this example, we load a JDBC driver class dynamically. This is often used in 
     }
   }
 #+END_SRC
+
+#+RESULTS:
+: Driver class loaded: java.sql.Driver
