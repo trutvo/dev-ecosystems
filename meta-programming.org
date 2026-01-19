@@ -22,48 +22,128 @@ meta programming, because lisp programs can easily manipulate other lisp program
 
 * Python
 
-In python, meta programming can be achieved using functions that manipulate other functions or classes.
+In script languages like python reflect of code is used very often.
 
-#+BEGIN_SRC python :exports both :results silent :tangle example_meta_programming.py
+
+#+BEGIN_SRC python :session :exports both :results value :tangle example_meta_programming_worker.py
+  out = ""
+
+  def echo(msg):
+    global out
+    out += msg + "\n"
+
+  class Worker:
+    def do_work(self):
+      return self.__class__.__name__ + ": Doing work..."
+
+  class ClosableWorker(Worker):
+    def do_work(self):
+      return self.__class__.__name__ + ": Doing work..."
+    def close(self):
+      return self.__class__.__name__ + ": close"
+
+  def run_worker(w):
+    echo(w.do_work())
+    if hasattr(w, 'close') and callable(getattr(w, 'close')):
+      echo(w.close())
+
+  w = Worker()
+  run_worker(w)
+  cw = ClosableWorker()
+  run_worker(cw)
+  out
+
+#+END_SRC
+
+#+RESULTS:
+: Worker: Doing work...
+: ClosableWorker: Doing work...
+: ClosableWorker: close
+
+A common pattern is to use decorators to add functionality to functions or methods.
+In this example, we create a simple transaction decorator that adds transaction management
+to functions that perform database operations.
+
+#+BEGIN_SRC python :session :exports both :results value :tangle example_meta_programming_trx.py
+  out = ""
+
+  def echo(msg):
+    global out
+    out += msg + "\n"
+
   class DatabaseConnection:
-      def begin(self):
-          print("DB: begin transaction")
-          pass
-      def rollback(self):
-          print("DB: rollback transaction")
-          pass
-      def commit(self):
-          print("DB: commit transaction")
-          pass
-
-  def transactional(db):
-      def decorator(func): 
-          def wrapper():
-              db.begin()
-              try:
-                  func()
-                  db.commit()
-              except Exception as e:
-                  db.rollback()
-                  raise e
-          return wrapper
-      return decorator
+   def begin(self):
+     echo("DB: begin transaction")
+     pass
+   def rollback(self):
+     echo("DB: rollback transaction")
+     pass
+   def commit(self):
+     echo("DB: commit transaction")
+     pass
 
   db = DatabaseConnection()
-      
-  @transactional(db)
+
+  def transactional(func):
+    def wrapper():
+      db.begin()
+      try:
+        func()
+        db.commit()
+      except Exception as e:
+        db.rollback()
+        raise e
+    return wrapper
+
+  @transactional
   def say_hello():
-      print("Hello!")
-      
-  @transactional(db)
+    echo("Hello!")
+
+  @transactional
   def fail():
-      1 / 0
+    1 / 0
 
   try:
-    print("---")
+    echo("---")
     say_hello()
-    print("---")
+    echo("---")
     fail()
   except Exception as e:
-    print(f"ERROR: Caught exception: {e}")
+    echo(f"ERROR: Caught exception: {e}")
+  print(out)
+  out
+#+END_SRC
+
+#+RESULTS:
+: ---
+: DB: begin transaction
+: Hello!
+: DB: commit transaction
+: ---
+: DB: begin transaction
+: DB: rollback transaction
+: ERROR: Caught exception: division by zero
+
+
+* Java
+
+A typical example of meta programming in Java is loading classes dynamically at runtime using reflection.
+In this example, we load a JDBC driver class dynamically. This is often used in application servers.
+
+#+BEGIN_SRC java :exports both :results silent :tangle LoadDriverExample.java
+  import java.lang.reflect.Method;
+
+  public class LoadDriverExample {
+    public static void main(String[] args) {
+      try {
+        // Load the JDBC driver class dynamically
+        //Class<?> driverClass = Class.forName("com.mysql.cj.jdbc.Driver");
+        Class<?> driverClass = Class.forName("java.sql.Driver");
+        Method method = driverClass.getMethod("connect", String.class, java.util.Properties.class);
+        System.out.println("Driver class loaded: " + driverClass.getName());
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
+  }
 #+END_SRC
