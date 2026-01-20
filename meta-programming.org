@@ -5,7 +5,9 @@ Meta programming is a programming technique in which computer programs have the 
 to treat other programs as their data. This means that a program can be designed to read,
 generate, analyze, or transform other programs, and even modify itself while running.
 
-* Lisp
+* Meta programming with Interpreter Languages
+
+** Lisp
 
 In lisp data and code are represented in the same way: as lists. This makes lisp a powerful language for
 meta programming, because lisp programs can easily manipulate other lisp programs.
@@ -20,7 +22,7 @@ meta programming, because lisp programs can easily manipulate other lisp program
 : data=(+ 1 3 4 5)
 : executed code=13
 
-* Python
+** Python
 
 In script languages like python reflect of code is used very often.
 
@@ -125,7 +127,24 @@ to functions that perform database operations.
 : ERROR: Caught exception: division by zero
 
 
-* Java
+* Meta programming with Java
+
+In java you can do the same pattern as in python by using annotations.
+
+#+BEGIN_SRC java  :results silent
+  @Transactional
+  public void processEvent(Long reviewId) {
+    ...
+  }
+#+END_SRC
+
+They look the same as the pyhon decorators, but work differently.
+In comparison to python, java needs to use the reflection API to read this annotation at runtime. 
+Java programmers have to write the code that is doing the annotation processing themselves or use a framework that does this for them (like Spring).
+
+See: https://www.baeldung.com/java-dynamic-proxies
+
+** Dynamic Modules
 
 A typical example of meta programming in Java is loading classes dynamically at runtime using reflection.
 In this example, we load a JDBC driver class dynamically. This is often used in application servers.
@@ -150,3 +169,28 @@ In this example, we load a JDBC driver class dynamically. This is often used in 
 
 #+RESULTS:
 : Driver class loaded: java.sql.Driver
+
+* Meta programming with C/C++
+
+In C/C++ meta programming is often done at compile time using templates and macros.
+
+#+BEGIN_SRC cpp :exports both :results value :tangle meta_programming.cpp
+  #include <iostream>
+  #include <type_traits>
+
+  // A simple meta-program that computes the factorial of a number at compile time
+  template<int N>
+  struct Factorial {
+	static const int value = N * Factorial<N - 1>::value;
+  };
+
+  template<>
+  struct Factorial<0> {
+	static const int value = 1;
+  };
+
+  int main() {
+	std::cout << "Factorial of 5: " << Factorial<5>::value << std::endl;
+	return 0;
+  }
+#+END_SRC
