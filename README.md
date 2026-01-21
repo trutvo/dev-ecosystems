@@ -20,6 +20,32 @@
 * Debugging
 * Protocols: TCP, HTTP, REST
 * Frameworks: IOC, ORM, Web
+* Data Structures
+ * Lists
+ * Trees
+ * Graphs
+ * Hashmaps
+
+## Concepts
+
+* Separation of Concerns:
+ * CLI: "Write programs that do one thing and do it well. Write programs to work together. Write programs to handle text streams, because that is a universal interface."
+ * Micro Services: Do one thing good and communicate via REST with the other. 
+
+## Databases
+
+* Relational
+ * MySQL
+ * PostgreSQL
+* Key-Value
+ * Redis
+ * DynamoDB
+* Document
+ * MongoDB
+ * CouchDB
+ * Elasticsearch
+* Graph
+ * Neo4J
 
 ## Katas
 
